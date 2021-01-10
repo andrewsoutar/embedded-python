@@ -46,5 +46,5 @@
    (defmethod convert-from-python ((object python-list))
      (let ((vector (make-array (python-list-length object))))
        (loop for i from 0 below (length vector)
-	     do (setf (svref vector i) (python-list-elt object i)))
+	     do (setf (svref vector i) (convert-from-python (python-list-elt object i))))
        vector))})
