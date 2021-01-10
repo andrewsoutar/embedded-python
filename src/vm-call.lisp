@@ -7,8 +7,7 @@
   (:use :alexandria :anaphora :cffi :named-readtables)
   (:import-from :uiop #:nest)
   (:use :com.andrewsoutar.brace-lambda)
-  #+sbcl (:import-from :sb-int #:with-float-traps-masked)
-  #+sbcl (:import-from :sb-vm #:*float-trap-alist*)
+  #+sbcl (:import-from :sb-vm #:floating-point-modes)
   (:use
    :com.andrewsoutar.embedded-python/src/gil)
   (:export #:defcfun-py))
@@ -24,7 +23,10 @@
     `(progn
        (defcfun (,helper-name ,c-name) ,return-type ,@args)
        (defun ,name (,@arg-names)
-         (nest
-          #+sbcl (with-float-traps-masked ,(mapcar 'car *float-trap-alist*))
-          (with-gil
-            (,helper-name ,@arg-names)))))))
+	 (let (#+sbcl (orig-modes (sb-vm:floating-point-modes)))
+	   (unwind-protect
+		(progn
+		  #+sbcl (setf (floating-point-modes) 0)
+		  (with-gil
+		    (,helper-name ,@arg-names)))
+	     #+sbcl (setf (floating-point-modes) orig-modes)))))))
