@@ -8,8 +8,11 @@
   (:use :com.andrewsoutar.bootstrap :com.andrewsoutar.brace-lambda)
   (:use :com.andrewsoutar.embedded-python/grovel)
   (:use
+   :com.andrewsoutar.embedded-python/src/class
    :com.andrewsoutar.embedded-python/src/ffi-types
-   :com.andrewsoutar.embedded-python/src/vm-call))
+   :com.andrewsoutar.embedded-python/src/types
+   :com.andrewsoutar.embedded-python/src/vm-call)
+  (:export #:python-list))
 (in-package :com.andrewsoutar.embedded-python/src/types/list)
 
 (in-readtable brace-lambda)
