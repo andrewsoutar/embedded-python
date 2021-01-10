@@ -13,9 +13,7 @@
    :com.andrewsoutar.embedded-python/src/types/float
    :com.andrewsoutar.embedded-python/src/types/function
    :com.andrewsoutar.embedded-python/src/types/int
-   #. (if (uiop:featurep :sbcl)
-          :com.andrewsoutar.embedded-python/src/types/sbcl-list
-          :com.andrewsoutar.embedded-python/src/types/list)
+   :com.andrewsoutar.embedded-python/src/types/list
    :com.andrewsoutar.embedded-python/src/types/none
    :com.andrewsoutar.embedded-python/src/types/object
    :com.andrewsoutar.embedded-python/src/types/str
