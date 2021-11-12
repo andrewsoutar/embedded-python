@@ -40,7 +40,6 @@
 
 (defun read-expression (stream)
   (labels ((next-char () (read-char stream t nil t))
-           (next-expr () (read stream t nil t))
            (next-pyexpr () (read-expression stream))
            (unread (char) (unread-char char stream) char)
            (next-real-char () (loop for char = (next-char)
@@ -55,15 +54,11 @@
                     finally (unread char))
               'string)))
     (let ((expression
-            (if (get-macro-character (unread (next-real-char)))
-                (next-expr)
-                (with-macro-characters ((#\. {})
-                                        (#\, {})
-                                        (#\[ {})
-                                        (#\] {})
-                                        (#\( {})
-                                        (#\) {}))
-                  (next-expr)))))
+            (let ((readtable (copy-readtable *readtable*)))
+              (loop for char across ".,[]()" do
+                (set-macro-character char (or (get-macro-character char *readtable*) (constantly nil)) nil readtable))
+              (let ((*readtable* readtable))
+                (read stream t nil t)))))
       (loop
         (multiple-value-bind (operator args)
             (let ((char (next-real-char)))
