@@ -6,6 +6,7 @@
    :com.andrewsoutar.embedded-python/src/class
    :com.andrewsoutar.embedded-python/src/types/function)
   (:use-reexport
+   :com.andrewsoutar.embedded-python/src/types/exception
    :com.andrewsoutar.embedded-python/src/modules
    :com.andrewsoutar.embedded-python/src/syntax)
   (:export #:boot-python #:define-python-class))
